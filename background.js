@@ -2,7 +2,7 @@ let currentTabId = null;
 let startTime = Date.now();
 
 // Create an alarm for tracking time in active tab every 5 seconds
-chrome.alarms.create('trackTime', { periodInMinutes: 1 / 12 }); // 5 seconds
+chrome.alarms.create('trackTime', { periodInMinutes: 1 / 20 }); // 3 seconds
 
 // Listen for the alarm and then update the time spent on the current site
 chrome.alarms.onAlarm.addListener((alarm) => {
@@ -36,7 +36,8 @@ function updateCurrentTabTime() {
 
 // Function to update the site time in storage
 function updateSiteTime(url, timeSpent) {
-  chrome.storage.local.get({siteTime: {}}, function(data) {
+  chrome.storage.local.get({siteTime: {}}, function(data) { // first arg: key to fetch, and default value (empty) if not found
+    console.log('Site time data', data);
     let siteTime = data.siteTime;
     if (siteTime[url]) {
       siteTime[url] += timeSpent;
@@ -59,7 +60,7 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
 // Listen for tab updates to catch navigations in the same tab
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   if (tab.active && changeInfo.url) {
-    let url = new URL(changeInfo.url).hostname;
+    let url = new URL(changeInfo.url).hostname; //get only hostname of URL
     let currentTime = Date.now();
     let timeSpent = (currentTime - startTime) / 1000;
     updateSiteTime(url, timeSpent);
