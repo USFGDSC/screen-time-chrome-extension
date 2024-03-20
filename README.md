@@ -1,5 +1,3 @@
-id: usf-gdsc-spring-2024-chrome-extension-workshop
-
 # Screen Time Tracker
 
 Screen Time Tracker is a Chrome extension that helps users monitor the amount of time they spend on different websites. It runs in the background, tracking time spent actively browsing each site, and provides a summary through a simple popup interface.
